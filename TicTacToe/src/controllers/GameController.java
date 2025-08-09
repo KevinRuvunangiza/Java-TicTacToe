@@ -17,12 +17,11 @@ public class GameController {
 
         for(int i = 0; i<3;i++){
             for(int j = 0; j<3; j++){
-                board[i][j] = " ";
+                board[i][j] = "";
             }
         }
 
         System.out.println("GameController initialized with empty board.");
-        System.out.println(board);
     }
 
     public boolean makeMove(int row,int col){
@@ -30,10 +29,12 @@ public class GameController {
         if (board[row][col].isEmpty()) {
             board[row][col] = currentPlayerSymbol;
             switchPlayer();
-            System.out.println("Move made at (" + row + ", " + col + ") by player: " + currentPlayerSymbol);
-            System.out.println("Current board state: "+board[row][col]);
+            System.out.println("Move made at (" + row + ", " + col + ") by player: " + currentPlayerSymbol);     
+            System.out.println(board);       
             return true;
         }else{
+            System.out.println("Position already occupied.");
+            System.out.println(board);
             return false;
         }
     }
@@ -46,4 +47,8 @@ public class GameController {
              currentPlayerSymbol = player1Symbol;
         }
     }
+
+   public String getCurrentPlayer(){
+    return currentPlayerSymbol;
+   }
 }
