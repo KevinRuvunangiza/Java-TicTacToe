@@ -1,12 +1,12 @@
 package obj;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controllers.GameController;
@@ -19,44 +19,49 @@ public class BoardPanel extends JPanel implements ActionListener {
    public int _vGap = 5;
    public int _numOfGrids = _rows * _cols;
 
-   JButton[][] gridButtons = new JButton[_rows][_cols];
-     GameController gameController = new GameController();
+   JButton[][] _gridButtons = new JButton[_rows][_cols];
+   GameController _gameController;
+   JLabel _statusLabel;
 
-   public BoardPanel() {
+   // BoardPanel constructor
+   public BoardPanel(GameController gameController, JLabel statusLabel) {
       this.setBackground(Color.DARK_GRAY);
       this.setLayout(new GridLayout(_rows, _cols, _hGap, _vGap));
+      this._gameController = gameController;
+      this._statusLabel = statusLabel;
 
       for (int i = 0; i < _rows; i++) {
          for (int j = 0; j < _cols; j++) {
 
-            gridButtons[i][j] = new JButton();
+            _gridButtons[i][j] = new JButton();
 
-            gridButtons[i][j].addActionListener(e -> actionPerformed(e));
-            gridButtons[i][j].setActionCommand(i + "," + j);
-            gridButtons[i][j].setFont(gridButtons[i][j].getFont().deriveFont(24f));
-            gridButtons[i][j].setForeground(Color.BLACK);
-            gridButtons[i][j].setBackground(Color.white);
-            gridButtons[i][j].setBorder(null);
-            gridButtons[i][j].setOpaque(true);
+            _gridButtons[i][j].addActionListener(e -> actionPerformed(e));
+            _gridButtons[i][j].setActionCommand(i + "," + j);
+            _gridButtons[i][j].setFont(_gridButtons[i][j].getFont().deriveFont(24f));
+            _gridButtons[i][j].setForeground(Color.BLACK);
+            _gridButtons[i][j].setBackground(Color.white);
+            _gridButtons[i][j].setBorder(null);
+            _gridButtons[i][j].setOpaque(true);
 
-            this.add(gridButtons[i][j]);
+            this.add(_gridButtons[i][j]);
          }
       }
 
-      
    }
-   
+
    public void actionPerformed(ActionEvent e) {
-    
+
       String command = e.getActionCommand();
       String[] indices = command.split(",");
       int row = Integer.parseInt(indices[0]);
       int col = Integer.parseInt(indices[1]);
-      boolean moveMade = gameController.makeMove(row, col);
+      String currentPlayerBeforeMove = _gameController.getCurrentPlayer();
+      String moveMade = _gameController.makeMove(row, col);
 
-      if (moveMade) {
-         gridButtons[row][col].setText(gameController.getCurrentPlayer());
-         gridButtons[row][col].setEnabled(false);
+      if (!moveMade.equals("Position already occupied.")) {
+         _gridButtons[row][col].setText(currentPlayerBeforeMove);
+         _statusLabel.setText(moveMade);
+         _gridButtons[row][col].setEnabled(false);
       }
    }
 }
