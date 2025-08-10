@@ -25,7 +25,8 @@ public class BoardPanel extends JPanel implements ActionListener {
 
    // BoardPanel constructor
    public BoardPanel(GameController gameController, JLabel statusLabel) {
-      this.setBackground(Color.DARK_GRAY);
+
+      this.setBackground(Color.black);
       this.setLayout(new GridLayout(_rows, _cols, _hGap, _vGap));
       this._gameController = gameController;
       this._statusLabel = statusLabel;
@@ -37,7 +38,7 @@ public class BoardPanel extends JPanel implements ActionListener {
 
             _gridButtons[i][j].addActionListener(e -> actionPerformed(e));
             _gridButtons[i][j].setActionCommand(i + "," + j);
-            _gridButtons[i][j].setFont(_gridButtons[i][j].getFont().deriveFont(24f));
+            _gridButtons[i][j].setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 60));
             _gridButtons[i][j].setForeground(Color.BLACK);
             _gridButtons[i][j].setBackground(Color.white);
             _gridButtons[i][j].setBorder(null);
@@ -53,15 +54,36 @@ public class BoardPanel extends JPanel implements ActionListener {
 
       String command = e.getActionCommand();
       String[] indices = command.split(",");
+
       int row = Integer.parseInt(indices[0]);
       int col = Integer.parseInt(indices[1]);
+
       String currentPlayerBeforeMove = _gameController.getCurrentPlayer();
       String moveMade = _gameController.makeMove(row, col);
 
       if (!moveMade.equals("Position already occupied.")) {
          _gridButtons[row][col].setText(currentPlayerBeforeMove);
          _statusLabel.setText(moveMade);
-         _gridButtons[row][col].setEnabled(false);
+         // _gridButtons[row][col].setEnabled(false);
+
+         // Lock the grid buttons if the game is over
+         if (_gameController.isGameOver) {
+            for (int i = 0; i < _rows; i++) {
+               for (int j = 0; j < _cols; j++) {
+
+                  _gridButtons[i][j].setEnabled(false);
+               }
+            }
+
+         }
+
+         if (currentPlayerBeforeMove.equals("X")) {
+            _gridButtons[row][col].setForeground(Color.decode("#3A86FF")); // Blue for player X
+         } else {
+            _gridButtons[row][col].setForeground(Color.decode("#FF9F1C")); // Orange for player O
+
+         }
       }
+
    }
 }
