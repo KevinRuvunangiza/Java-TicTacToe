@@ -1,17 +1,23 @@
 package controllers;
 
+import obj.AIPlayer;
+
 public class GameController {
 
     private String player1Symbol = "X";
     private String player2Symbol = "O";
     private String currentPlayerSymbol = player1Symbol;
     public boolean isGameOver = false;
+    public int _row;
+    public int _col;
 
     public String[][] board = new String[3][3];
+    public AIPlayer aiPlayer = new AIPlayer(this);
 
     public GameController() {
         isGameOver = false;
-
+        aiPlayer.makeRandomMove();
+        
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 board[i][j] = "";
@@ -22,6 +28,8 @@ public class GameController {
     }
 
     public String makeMove(int row, int col) {
+        this._row = row;
+        this._col = col;
 
         if (isGameOver) {
         
@@ -117,5 +125,13 @@ public class GameController {
             }
         }
         return true;
+    }
+
+    public int getRow(){
+        return _row;
+    }
+
+    public int getCol(){
+        return _col;
     }
 }
