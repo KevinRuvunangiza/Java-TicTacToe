@@ -12,8 +12,9 @@ public class Game extends JFrame {
     public int _height;
 
     GameController gameController = new GameController();
+    AIPlayer aiPlayer = new AIPlayer(gameController);
     JLabel statusLabel = new JLabel("It's Player " + gameController.getCurrentPlayer() + "'s turn");
-    BoardPanel boardPanel = new BoardPanel(gameController, statusLabel);
+    BoardPanel boardPanel = new BoardPanel(gameController, statusLabel,aiPlayer);
 
     public Game(String title, int width, int height) {
         this._title = title;

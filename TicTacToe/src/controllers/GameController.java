@@ -7,17 +7,18 @@ public class GameController {
     private String player1Symbol = "X";
     private String player2Symbol = "O";
     private String currentPlayerSymbol = player1Symbol;
+
     public boolean isGameOver = false;
+
     public int _row;
     public int _col;
 
     public String[][] board = new String[3][3];
-    public AIPlayer aiPlayer = new AIPlayer(this);
+   
 
     public GameController() {
         isGameOver = false;
-        aiPlayer.makeRandomMove();
-        
+    
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 board[i][j] = "";
@@ -50,6 +51,7 @@ public class GameController {
 
                 } else {
                     switchPlayer();
+                   
                     return "It's " + currentPlayerSymbol + " turn";
                     
                 }
@@ -67,8 +69,10 @@ public class GameController {
 
         if (currentPlayerSymbol.equals(player1Symbol)) {
             currentPlayerSymbol = player2Symbol;
+
         } else if (currentPlayerSymbol.equals(player2Symbol)) {
             currentPlayerSymbol = player1Symbol;
+
         }
     }
 
@@ -133,5 +137,9 @@ public class GameController {
 
     public int getCol(){
         return _col;
+    }
+
+    public String[][] getBoard() {
+        return board;
     }
 }

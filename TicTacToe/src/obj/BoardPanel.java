@@ -22,14 +22,16 @@ public class BoardPanel extends JPanel implements ActionListener {
    JButton[][] _gridButtons = new JButton[_rows][_cols];
    GameController _gameController;
    JLabel _statusLabel;
+   AIPlayer _aiPlayer;
 
    // BoardPanel constructor
-   public BoardPanel(GameController gameController, JLabel statusLabel) {
+   public BoardPanel(GameController gameController, JLabel statusLabel, AIPlayer aiPlayer) {
 
       this.setBackground(Color.black);
       this.setLayout(new GridLayout(_rows, _cols, _hGap, _vGap));
       this._gameController = gameController;
       this._statusLabel = statusLabel;
+      this._aiPlayer = aiPlayer;
 
       for (int i = 0; i < _rows; i++) {
          for (int j = 0; j < _cols; j++) {
@@ -75,14 +77,19 @@ public class BoardPanel extends JPanel implements ActionListener {
                }
             }
 
+         } else {
+
          }
 
          if (currentPlayerBeforeMove.equals("X")) {
-            _gridButtons[row][col].setForeground(Color.decode("#3A86FF")); // Blue for player X
-         } else {
-            _gridButtons[row][col].setForeground(Color.decode("#FF9F1C")); // Orange for player O
+            _gridButtons[row][col].setForeground(Color.decode("#3A86FF"));
 
-         }
+            int aiRow = _aiPlayer.findRandomMoves()[0];
+            int aiCol = _aiPlayer.findRandomMoves()[1]; // Blue for player X
+            _gameController.makeMove(aiRow, aiCol);
+            _gridButtons[aiRow][aiCol].setText("O");
+            _gridButtons[row][col].setForeground(Color.decode("#FF9F1C"));
+         } 
       }
 
    }
